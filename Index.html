@@ -1,0 +1,90 @@
+# Mood-tracker
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mood Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+      margin: 5px;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Mood Tracker</h1>
+    <p>How are you feeling today?</p>
+    <div id="mood-buttons">
+      <button onclick="saveMood('😊')">😊 Happy</button>
+      <button onclick="saveMood('😢')">😢 Sad</button>
+      <button onclick="saveMood('😡')">😡 Angry</button>
+      <button onclick="saveMood('😴')">😴 Tired</button>
+      <button onclick="saveMood('😌')">😌 Relaxed</button>
+    </div>
+    <h2>History</h2>
+    <ul id="mood-history"></ul>
+  </div>
+  <script>
+    function saveMood(mood) {
+      let moods = JSON.parse(localStorage.getItem("moods")) || [];
+      let moodEntry = {
+        mood: mood,
+        date: new Date().toLocaleString()
+      };
+
+      moods.push(moodEntry);
+      localStorage.setItem("moods", JSON.stringify(moods));
+
+      displayMoods();
+    }
+
+    function displayMoods() {
+      let moods = JSON.parse(localStorage.getItem("moods")) || [];
+      let moodHistory = document.getElementById("mood-history");
+      moodHistory.innerHTML = "";
+
+      moods.forEach(entry => {
+        let li = document.createElement("li");
+        li.textContent = `${entry.mood} - ${entry.date}`;
+        moodHistory.appendChild(li);
+      });
+    }
+
+    // Display stored moods on page load
+    document.addEventListener("DOMContentLoaded", displayMoods);
+  </script>
+</body>
+
+</html>
